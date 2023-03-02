@@ -1,3 +1,45 @@
+2.1
+# sql_fact_orders = **
+# Create the table that joins dataframes
+# df_fact_order_head(2)    I think this is right for the end
+sql_fact_orders = """
+SELECT o.id,
+o.employee_id,
+    o.customer_id,
+    od.product_id,
+    o.shipper_id,
+    o.ship_name,
+    o.ship_address,
+    o.ship_city,
+    o.ship_state_province,
+    o.ship_zip_postal_code,
+    o.ship_country_region,
+    od.quantity,
+    o.order_date,
+    o.shipped_date,
+    od.unit_price,
+    od.discount,
+    o.shipping_fee,
+    o.taxes,
+    o.payment_type,
+    o.paid_date,
+    o.tax_rate,
+    os.status_name AS order_status,
+    ods.status_name AS order_details_status
+FROM northwind.orders AS o
+INNER JOIN northwind.orders_status AS os
+ON o.status_id = os.id
+RIGHT OUTER JOIN northwind.order_details AS od_status
+ON o.id = od.order_id
+INNER JOIN northwind.order_details_status AS ods
+ON od.status_id = ods.id;
+"""
+
+# Copied from up there
+df_fact_orders = get_dataframe(user_id, pwd, host_name, src_dbname, sql_fact_orders)
+df_fact_orders.head(2)
+
+2.2
 2.2.1
 # Use 1.1 as a guide
 sql_orders = "SELECT * FROM northwind.orders;"
